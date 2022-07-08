@@ -1,0 +1,41 @@
+/*
+ The MIT License (MIT)
+ Copyright (c) 2022 Emeer Adhamian (github.com/kode-trek)
+ https://github.com/kode-trek/nc-mate/blob/main/LICENSE
+ https://github.com/kode-trek/archive/blob/main/LICENSE
+*/
+
+#include "proc_dns.hh"
+#include "sim_dns.hh"
+
+int main(int argc, char* argv[]) {
+ /*  variable(s)
+ [v1] color-title
+ [v2] color-help
+ [v3] color-pattern
+ */
+ string v1 = color("blue", "-- D omain N ame S ystem --");
+ string v2 = color("blue", " --help");
+ string v3 = color("blue", "[PATTERN] ");
+ // op(s)
+ if (str(argv[1]) == "") {
+  cout <<
+  v1 + "\n"
+  "OBSOLETED""\n"
+  "nc-mate dns" + v2
+  << endl;
+  exit(0);
+ }
+ if (str(argv[1]) == "--help") {
+  cout <<
+  v3 + "nc-mate dns --bypass""\n" +
+  v3 + "nc-mate dns --reset""\n"
+  << endl;
+  exit(0);
+ }
+ if (str(argv[1]) == "--sim") {
+  sim_dns(argv[2]);
+  exit(0);
+ }
+ proc_dns(argv[1]);
+}
