@@ -1,0 +1,180 @@
+#! /bin/bash
+
+# The MIT License (MIT)
+# Copyright (c) 2024 Emeer Adhamian (github.com/kode-trek)
+# https://raw.githubusercontent.com/kode-trek/nc-mate/main/LICENSE
+
+RED='\033[1;35m'
+GREEN='\033[1;36m'
+BLUE='\033[1;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m' #No-Color
+
+printf "${GREEN}-- NC-MATE --${NC}""\n"
+
+if [[ "$1" == "--revert" ]]
+then
+ trap "exit" INT
+
+ sudo apt-get install -f -y
+ sudo apt-get update -y
+
+ sudo apt-get remove mkisofs -y
+ sudo apt-get remove p7zip-rar -y
+ sudo apt-get remove xsel -y
+ sudo apt-get remove tree -y
+ sudo apt-get remove vlc -y
+ sudo apt-get remove mpv -y
+ sudo apt-get remove remmina remmina-plugin-vnc remmina-plugin-rdp -y
+ sudo apt-get remove gedit gedit-plugin-code-comment -y
+ sudo apt-get remove evince -y
+ sudo apt-get remove xchm -y
+ sudo apt-get remove dosbox -y
+ sudo apt-get remove wine -y
+
+ sudo apt-get install xed -y
+ sudo apt-get install xreader -y
+
+ sudo apt-get install -f -y
+ sudo apt-get update -y
+
+ sudo rm -rf /usr/lib/nc-mate-bin/
+ sudo rm -rf /usr/lib/nc-mate-lib/
+ sudo rm /usr/bin/nc-mate
+
+ if [[ -e ~/nc-mate-asset ]]
+ then
+  printf "${BLUE}[OUT]${NC} ~/nc-mate-asset""\n"
+  printf "${YELLOW}[WARNING]${NC} file(s) found.""\n"
+ fi
+
+ read -n1 -r -p "press ANY-KEY to EXIT..." key
+ echo
+ exit
+fi
+
+lab51cc 1>/dev/null 2>/dev/null
+if [[ "$?" > 0 ]]
+then
+ echo "[REQUIREMENT] <lab51cc>"
+ echo "[DEVELOPMENT] <github.com/kode-trek>"
+ read -n1 -r -p "press ANY-KEY to EXIT..." key
+ echo
+ exit
+fi
+
+flg=0
+if [[ -e /usr/bin/nc-mate ]]
+then
+ printf "${BLUE}[OUT]${NC} /usr/bin/nc-mate""\n"
+ flg=1
+fi
+if [[ -e /usr/lib/nc-mate-lib/ ]]
+then
+ printf "${BLUE}[OUT]${NC} /usr/lib/nc-mate-lib/""\n"
+ flg=1
+fi
+if [[ -e /usr/bin/nc-mate-bin/ ]]
+then
+ printf "${BLUE}[OUT]${NC} /usr/bin/nc-mate-bin/""\n"
+ flg=1
+fi
+if [[ $flg == 1 ]]
+then
+ printf "${YELLOW}[WARNING]${NC} file(s) found.""\n"
+ read -p "RE-INSTALL? (Y/N): " confirm && [[ $confirm == [yY] ]] || exit 1
+fi
+
+trap "exit" INT
+
+sudo apt-get install -f -y
+sudo apt-get update -y
+
+sudo apt-get install software-properties-common -y
+
+sudo apt-get remove xed -y
+sudo apt-get remove xreader -y
+rm -r ~/.config/xed
+rm -r ~/.config/xreader
+
+sudo apt-get install gedit gedit-plugin-code-comment -y
+sudo apt-get install evince -y
+sudo apt-get install xchm -y
+sudo apt-get install vlc -y
+sudo apt-get install mpv -y
+sudo apt-get install tree -y
+sudo apt-get install remmina remmina-plugin-vnc remmina-plugin-rdp -y
+sudo apt-get install mkisofs -y
+sudo apt-get install p7zip-rar -y
+sudo apt-get install xsel -y
+sudo apt-get install dosbox -y
+sudo apt-get install wine -y
+
+sudo rm /usr/bin/nc-mate
+sudo rm -r /usr/lib/nc-mate-bin/
+sudo rm -r /usr/lib/nc-mate-lib/
+sudo mkdir /usr/lib/nc-mate-bin/
+sudo mkdir /usr/lib/nc-mate-lib/
+
+lab51cc lib/2dy/main_2dy.cc
+sudo mv main_2dy_* /usr/lib/nc-mate-bin/2dy
+
+lab51cc lib/abox/main_abox.cc
+sudo mv main_abox_* /usr/lib/nc-mate-bin/abox
+
+#lab51cc lib/cdup/main_cdup.cc
+#sudo mv main_cdup_* /usr/lib/nc-mate-bin/cdup
+
+lab51cc lib/xcb/main_xcb.cc
+sudo mv main_xcb_* /usr/lib/nc-mate-bin/xcb
+
+#lab51cc lib/deb/main_deb.cc
+#sudo mv main_deb_* /usr/lib/nc-mate-bin/deb
+
+#lab51cc lib/dns/main_dns.cc
+#sudo mv main_dns_* /usr/lib/nc-mate-bin/dns
+
+#lab51cc lib/ena/main_ena.cc
+#sudo mv main_ena_* /usr/lib/nc-mate-bin/ena
+
+lab51cc lib/ff/main_ff.cc
+sudo mv main_ff_* /usr/lib/nc-mate-bin/ff
+
+lab51cc lib/hi/main_hi.cc
+sudo mv main_hi_* /usr/lib/nc-mate-bin/hi
+
+#lab51cc lib/job/main_job.cc
+#sudo mv main_job_* /usr/lib/nc-mate-bin/job
+
+lab51cc lib/shh/main_shh.cc
+sudo mv main_shh_* /usr/lib/nc-mate-bin/shh
+
+lab51cc lib/snf/main_snf.cc
+sudo mv main_snf_* /usr/lib/nc-mate-bin/snf
+
+#lab51cc lib/usb/main_usb.cc
+#sudo mv main_usb_* /usr/lib/nc-mate-bin/usb
+
+#lab51cc lib/vbox/main_vbox.cc
+#sudo mv main_vbox_* /usr/lib/nc-mate-bin/vbox
+
+#lab51cc lib/wifi/main_wifi.cc
+#sudo mv main_wifi_* /usr/lib/nc-mate-bin/wifi
+
+#lab51cc lib/zpr/main_zpr.cc
+#sudo mv main_zpr_* /usr/lib/nc-mate-bin/zpr
+
+lab51cc lib/help.cc
+sudo mv help_* /usr/lib/nc-mate-bin/help
+
+lab51cc lib/menu.cc
+sudo mv menu_* /usr/lib/nc-mate-bin/menu
+
+lab51cc lib/intro.cc
+sudo mv intro_* /usr/lib/nc-mate-bin/intro
+
+sudo cp lib/nc-mate /usr/bin
+sudo chmod 755 /usr/bin/nc-mate
+sudo cp -rf lib/0-asset /usr/lib/nc-mate-lib/asset
+
+read -n1 -r -p "press ANY-KEY to EXIT..." key
